@@ -1,5 +1,8 @@
 import json
 import datetime
+import operator
+import re
+
 
 # Author: Benedict McGovern
 # Idea:
@@ -29,6 +32,8 @@ with open("data/ABigBagofLads_y45L9dwTEQ/message_2019.json", "r") as f:
 with open("data/ABigBagofLads_y45L9dwTEQ/message_2018.json", "r") as f:
     message_data_2018 = json.load(f)
 
+def special_match(strg, search=re.compile(r'[^a-z0-9.]').search):
+    return not bool(search(strg))
 
 def break_messages_into_year(year):
     with open("data/ABigBagofLads_y45L9dwTEQ/message_1.json", "r") as f:
@@ -44,15 +49,12 @@ def break_messages_into_year(year):
         elif ms > start_time_2018:
             messages_2018['messages'].append(message)
         else:
-            print(ms)
-            print('Breaking')
             break
 
     with open("data/ABigBagofLads_y45L9dwTEQ/message_2018.json", 'w') as f:
         json.dump(messages_2018, f)
 
 def newcomers_participants():
-
     participants_2019, participants_2018 = [], []
     for message in message_data_2019['messages']:
         if message['sender_name'] not in participants_2019:
@@ -78,7 +80,6 @@ def messages_per_person():
 
 # messages_per_person()
 
-
 def reactions_per_person():
     message_dict = {}
     for message in message_data_2019['messages']:
@@ -91,7 +92,6 @@ def reactions_per_person():
                 message_dict[sender] += reactions_amount
     return message_dict
 
-
 def reactions_per_message_per_person(messages,reactions):
     for sender in messages.keys():
         print(sender)
@@ -99,7 +99,82 @@ def reactions_per_message_per_person(messages,reactions):
         print("Reactions:"+str(reactions[sender]) )
         print(reactions[sender]/messages[sender])
 
+# messages = messages_per_person()
+# reactions = reactions_per_person()
+# reactions_per_message_per_person(messages,reactions)
 
-messages = messages_per_person()
-reactions = reactions_per_person()
-reactions_per_message_per_person(messages,reactions)
+
+def most_reactions_per_message():
+    messages = message_data_2019['messages']
+    reactions_dict = []
+    for message in messages:
+        sender = message['sender_name']
+        if 'reactions' in message.keys():
+            if len(message['reactions']) > 5:
+                if 'content' in message.keys():
+                    reactions_dict.append({'person': message['sender_name'], 'message': message['content'], 'amount': len(message['reactions'])})
+    # reactions_dict = sorted(reactions_dict.items(), key=operator.itemgetter(1))
+    reactions_dict = sorted(reactions_dict, key = lambda i: i['amount'], reverse=True)
+    with open("data/reactions.json", 'w') as f:
+        json.dump(reactions_dict, f)
+
+# most_reactions_per_message()
+
+def most_reactions_per_photo():
+    messages = message_data_2019['messages']
+    reactions_dict = []
+    for message in messages:
+        sender = message['sender_name']
+        if 'reactions' in message.keys():
+            if len(message['reactions']) > 1:
+                if 'photos' in message.keys():
+                    reactions_dict.append({'person': message['sender_name'], 'photo': message['photos'], 'amount': len(message['reactions'])})
+    reactions_dict = sorted(reactions_dict, key = lambda i: i['amount'], reverse=True)
+    with open("data/reactions_photo.json", 'w') as f:
+        json.dump(reactions_dict, f)
+
+most_reactions_per_photo()
+
+def longest_string_hahah():
+    messages = message_data_2019['messages']
+    reactions_dict = []
+    longest, longest_message = 0, ''
+    is_haha, count, count_save = False, 0, 0
+    for i, message in enumerate(messages):
+        if 'content' in message.keys():
+            content = message['content']
+            if set(content).issubset(set(['a', 'h', ' ', 'A' , 'H'])):
+                if is_haha:
+                    count+=1
+                    print(count)
+                is_haha = True
+                if len(content) > longest:
+                    longest = len(content)
+                    longest_message = message
+            elif is_haha:
+                if count > count_save:
+                    count_save = count
+                count = 0
+                is_haha = False
+
+# longest_string_hahah()
+
+
+def longest_streak_without_message():
+    messages = message_data_2019['messages']
+    messages_dict = {}
+    for i, message in enumerate(messages):
+        sender = message['sender_name']
+        if sender not in messages_dict:
+            messages_dict[sender] = {'diff':0 , 'last': message['timestamp_ms']}
+        else:
+            diff = ((messages_dict[sender]['last'] - message['timestamp_ms'])/1000)/86400
+            if diff > messages_dict[sender]['diff']:
+                 messages_dict[sender]['diff'] = diff
+
+            messages_dict[sender]['last'] = message['timestamp_ms']
+    print(messages_dict)
+    with open("data/message_diff.json", 'w') as f:
+        json.dump(messages_dict, f)
+
+longest_streak_without_message()
