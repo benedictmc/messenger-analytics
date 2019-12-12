@@ -1,8 +1,6 @@
 import json
 import datetime
 import operator
-import re
-
 
 # Author: Benedict McGovern
 # Idea:
@@ -31,9 +29,6 @@ with open("data/ABigBagofLads_y45L9dwTEQ/message_2019.json", "r") as f:
     message_data_2019 = json.load(f)
 with open("data/ABigBagofLads_y45L9dwTEQ/message_2018.json", "r") as f:
     message_data_2018 = json.load(f)
-
-def special_match(strg, search=re.compile(r'[^a-z0-9.]').search):
-    return not bool(search(strg))
 
 def break_messages_into_year(year):
     with open("data/ABigBagofLads_y45L9dwTEQ/message_1.json", "r") as f:
