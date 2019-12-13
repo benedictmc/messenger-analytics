@@ -87,16 +87,15 @@ def reactions_per_person():
                 message_dict[sender] += reactions_amount
     return message_dict
 
-def reactions_per_message_per_person(messages,reactions):
+def reactions_per_message_per_person():
+    messages = messages_per_person()
+    reactions = reactions_per_person()
+    message_dict = {}
     for sender in messages.keys():
-        print(sender)
-        print("Messages:"+str(messages[sender]) )
-        print("Reactions:"+str(reactions[sender]) )
-        print(reactions[sender]/messages[sender])
+        message_dict[sender] =  float(round(reactions[sender]/messages[sender], 2))
+    return message_dict
 
-# messages = messages_per_person()
-# reactions = reactions_per_person()
-# reactions_per_message_per_person(messages,reactions)
+# reactions_per_message_per_person()
 
 
 def most_reactions_per_message():
@@ -172,4 +171,4 @@ def longest_streak_without_message():
     with open("data/message_diff.json", 'w') as f:
         json.dump(messages_dict, f)
 
-longest_streak_without_message()
+# longest_streak_without_message()
