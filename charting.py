@@ -42,4 +42,8 @@ def reactions_per_message_per_person_graph():
     results = analytics.reactions_per_message_per_person()
     graph(results.keys(), results.values(), "Reactions per Message")
 
-reactions_per_message_per_person_graph()
+# reactions_per_message_per_person_graph()
+
+
+
+analytics.most_reactions_per_message()

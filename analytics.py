@@ -107,8 +107,8 @@ def most_reactions_per_message():
             if len(message['reactions']) > 5:
                 if 'content' in message.keys():
                     reactions_dict.append({'person': message['sender_name'], 'message': message['content'], 'amount': len(message['reactions'])})
-    # reactions_dict = sorted(reactions_dict.items(), key=operator.itemgetter(1))
     reactions_dict = sorted(reactions_dict, key = lambda i: i['amount'], reverse=True)
+    print(reactions_dict)
     with open("data/reactions.json", 'w') as f:
         json.dump(reactions_dict, f)
 

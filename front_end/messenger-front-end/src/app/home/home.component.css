@@ -1,0 +1,28 @@
+.header{
+    width:100%;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 400px;
+}
+/* .header-text{
+    pos
+} */
+
+
+body{
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+
+.example-card {
+    max-width: 300px;
+  }
+  
+  .example-header-image {
+    background-image: url('../../assets/pictures/profile_pictures/Stephen Murray.jpg');
+    
+    background-size: cover;
+  }

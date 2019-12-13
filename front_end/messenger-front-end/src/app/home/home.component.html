@@ -1,0 +1,39 @@
+<mat-toolbar>
+    <span>Messenger Analytics</span>
+</mat-toolbar>
+<!-- <hr> -->
+
+<div class="header">
+    <img class="header" src='assets/pictures/header.png'>
+</div>
+
+<body>
+    <div class="header-text">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+            <h1 class="display-4">Group Chat Statistics 2019</h1>
+            <p class="lead">This is a collection of statistics for Facebook Messenger for the year 2019. </p>
+            <span><h4 style="display: inline;" >Group Chat Name: </h4> <p style="display: inline;">A Big Bag of Lads </p></span>
+            </div>
+        </div>
+    </div>
+    <br><br><br><br>
+    <h4>Messages with Most Reactions</h4>
+    <hr>
+    <mat-card class="example-card">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image" ></div>
+            <mat-card-title><b>{{message_example['person']}}</b></mat-card-title>
+            <mat-card-subtitle>Date</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+                <i>{{message_example['message']}}</i>
+            </p>
+            <span><h4 style="display: inline;" >Reactions: </h4> <p style="display: inline;">{{message_example['amount']}} </p></span>
+        </mat-card-content>
+        </mat-card>
+
+</body>
+
+<!-- [ngStyle]="{ 'background-image': 'url('')'}" -->
