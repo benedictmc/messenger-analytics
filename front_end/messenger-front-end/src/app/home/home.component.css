@@ -17,8 +17,8 @@
 
 
 body{
-    margin-left: 40px;
-    margin-right: 40px;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 
@@ -30,4 +30,16 @@ body{
     background-image: url('../../assets/pictures/profile_pictures/Stephen Murray.jpg');
     
     background-size: cover;
+  }
+
+
+  
+  hr.divider { 
+    margin: 0em;
+    margin-bottom: 4px;
+    border-width: 2px;
+  } 
+
+  table {
+    width: 100%;
   }

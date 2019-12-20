@@ -10,6 +10,8 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
+import {MatTableModule} from '@angular/material/table';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 // declare var $: any;
@@ -28,7 +30,9 @@ import {MatButtonModule} from '@angular/material/button';
     MatToolbarModule,
     MatStepperModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTabsModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

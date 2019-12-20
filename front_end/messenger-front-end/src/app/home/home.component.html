@@ -8,18 +8,74 @@
 </div>
 
 <body>
-    <div class="header-text">
-        <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-            <h1 class="display-4">Group Chat Statistics 2019</h1>
-            <p class="lead">This is a collection of statistics for Facebook Messenger for the year 2019. </p>
-            <span><h4 style="display: inline;" >Group Chat Name: </h4> <p style="display: inline;">A Big Bag of Lads </p></span>
-            </div>
-        </div>
+    <br><br>
+    <div class="jumbotron">
+        <h1 class="display-4">Group Chat Statistics</h1>
+        <p class="lead">Group Chat: <strong>A Big Bag of Lads</strong></p>
+        <p class="lead">Year: <strong>2019</strong></p>
+        <hr class="my-4">
+        <p>This a page contains graphs and statistics using Facebook Messenger data to gain insights into group chats</p>
+      </div>
+
+
+    <h3>2019 Statistics</h3>
+    <hr class="divider">
+    <div style="margin: 30px" >
+        <h5>Total Year Messages:</h5>
+        <hr class="divider">
+        13,545
+        <br>
+        <br>
+        <h5>Total Group Members:</h5>
+        <hr class="divider">
+        24      
+        <br>
+        <br>
+        <h5>Newcomers in 2019:</h5>
+        <hr class="divider">
+        <b>Kevin Boland</b>, <b>Peter Comiskey</b>
+        <br>
     </div>
+    <br>
+    <h4>Messages per person</h4>
+    <hr class="divider">
+    <mat-tab-group>
+        <mat-tab label="Table"> 
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <!-- Position Column -->
+            <ng-container matColumnDef="position">
+              <th mat-header-cell *matHeaderCellDef> No. </th>
+              <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+            </ng-container>
+          
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+          
+            <!-- Weight Column -->
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef> Messages </th>
+              <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+            </ng-container>
+    
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </mat-tab>
+        <mat-tab label="Graph">         
+            <img src="assets/pictures/messages_per_person.png" alt="Nature" class="responsive">
+        </mat-tab>
+      </mat-tab-group>
+    <hr class="divider">
+    <br>
+    
     <br><br><br><br>
-    <h4>Messages with Most Reactions</h4>
-    <hr>
+
+
+
     <mat-card class="example-card">
         <mat-card-header>
             <div mat-card-avatar class="example-header-image" ></div>
@@ -33,7 +89,6 @@
             <span><h4 style="display: inline;" >Reactions: </h4> <p style="display: inline;">{{message_example['amount']}} </p></span>
         </mat-card-content>
         </mat-card>
-        <img src="assets/pictures/messages_per_person.png" alt="Nature" >
             
 </body>
 

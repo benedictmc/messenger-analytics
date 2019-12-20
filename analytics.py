@@ -61,7 +61,9 @@ def newcomers_participants():
     all_participants_2019 = participants_2019
     return newcomers, all_participants_2019
 
-# newcomers, all_participants_2019 = get_parcipitants_list()
+newcomers, all_participants_2019 = newcomers_participants()
+# print((newcomers))
+print(len(all_participants_2019))
 
 def messages_per_person():
     message_dict = {}
@@ -71,9 +73,19 @@ def messages_per_person():
             message_dict[sender] = 1
         else:
             message_dict[sender] += 1
-    return message_dict
+    # for key, val in message_dict.items():
+    result, count = [], 1
+    for key, value in sorted(message_dict.items(), key=lambda item: item[1], reverse=True):
+        message_dict_sorted = {}
+        message_dict_sorted['position'] =count
+        message_dict_sorted['name'] =key
+        message_dict_sorted['amount'] =value
+        result.append(message_dict_sorted)
+        count +=1
 
-# messages_per_person()
+    return result
+
+print(messages_per_person())
 
 def reactions_per_person():
     message_dict = {}
@@ -172,3 +184,43 @@ def longest_streak_without_message():
         json.dump(messages_dict, f)
 
 # longest_streak_without_message()
+
+
+def amount_of_messages():
+    messages = message_data_2019['messages']
+    return len(messages)
+
+
+def amount_of_parpticatants():
+    messages = message_data_2019['messages']
+    return len(messages)
+print(amount_of_messages())
+
+def most_messages_in_day():
+    messages = message_data_2019['messages']
+    messages_dict = {}
+    next_day, day, old_day = None, 86400000, None
+    largest = -1
+    for i, message in enumerate(messages):
+        current = message['timestamp_ms']
+        if not next_day:
+            old_day = current
+            messages_dict[old_day] = 1
+            next_day = message['timestamp_ms'] - day
+        elif current > next_day :
+            messages_dict[old_day] += 1
+        elif current < next_day :
+            old_day = current
+            next_day = message['timestamp_ms'] - day
+            messages_dict[old_day] = 1
+        else:
+            print("Shouldnt be here")
+    for val in messages_dict.values():
+        if val > largest:
+            largest = val
+    print(f"The most amount of messages in a day was {largest}")
+    with open("data/message_per_day.json", 'w') as f:
+        json.dump(messages_dict, f)
+
+
+# most_messages_in_day()
