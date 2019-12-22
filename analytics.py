@@ -61,9 +61,9 @@ def newcomers_participants():
     all_participants_2019 = participants_2019
     return newcomers, all_participants_2019
 
-newcomers, all_participants_2019 = newcomers_participants()
-# print((newcomers))
-print(len(all_participants_2019))
+# newcomers, all_participants_2019 = newcomers_participants()
+# # print((newcomers))
+# print(len(all_participants_2019))
 
 def messages_per_person():
     message_dict = {}
@@ -85,7 +85,6 @@ def messages_per_person():
 
     return result
 
-print(messages_per_person())
 
 def reactions_per_person():
     message_dict = {}
@@ -97,7 +96,15 @@ def reactions_per_person():
                 message_dict[sender] = reactions_amount
             else:
                 message_dict[sender] += reactions_amount
-    return message_dict
+    result, count = [], 1
+    for key, value in sorted(message_dict.items(), key=lambda item: item[1], reverse=True):
+        message_dict_sorted = {}
+        message_dict_sorted['position'] =count
+        message_dict_sorted['name'] =key
+        message_dict_sorted['amount'] =value
+        result.append(message_dict_sorted)
+        count +=1
+    return result
 
 def reactions_per_message_per_person():
     messages = messages_per_person()
@@ -120,7 +127,6 @@ def most_reactions_per_message():
                 if 'content' in message.keys():
                     reactions_dict.append({'person': message['sender_name'], 'message': message['content'], 'amount': len(message['reactions'])})
     reactions_dict = sorted(reactions_dict, key = lambda i: i['amount'], reverse=True)
-    print(reactions_dict)
     with open("data/reactions.json", 'w') as f:
         json.dump(reactions_dict, f)
 
@@ -139,7 +145,7 @@ def most_reactions_per_photo():
     with open("data/reactions_photo.json", 'w') as f:
         json.dump(reactions_dict, f)
 
-most_reactions_per_photo()
+# most_reactions_per_photo()
 
 def longest_string_hahah():
     messages = message_data_2019['messages']
@@ -194,7 +200,6 @@ def amount_of_messages():
 def amount_of_parpticatants():
     messages = message_data_2019['messages']
     return len(messages)
-print(amount_of_messages())
 
 def most_messages_in_day():
     messages = message_data_2019['messages']

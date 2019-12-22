@@ -12,6 +12,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
+import { HttpClientModule } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
 
 // declare var $: any;
@@ -32,7 +34,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatCardModule,
     MatButtonModule,
     MatTabsModule,
-    MatTableModule
+    MatTableModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

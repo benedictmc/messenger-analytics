@@ -1,0 +1,157 @@
+{
+    "overall_stats": {
+        "message_total": 13545,
+        "participant_total": [
+            "Luke Stafford",
+            "Sean Parry",
+            "Niall Mac Mahon",
+            "Adam Murphy",
+            "Ciar\u00c3\u00a1n Mackey",
+            "Alastar Cassidy",
+            "Jack Stevens",
+            "Maciek Cieslak",
+            "Sean Boland",
+            "Ben McGovern",
+            "Kevin Boland",
+            "Tristan Ahern",
+            "Eoin O'Shaughnessy",
+            "Conor Lowry",
+            "Eamon Byrne",
+            "Peter Comiskey",
+            "Christian Kilcar",
+            "Stephen Dunne",
+            "Kevin Mullaney",
+            "Cian O'Reilly",
+            "David Reynolds",
+            "Stephen Murphy",
+            "Sean O'Driscoll",
+            "Stephen Murray"
+        ],
+        "participant_newcomers": [
+            "Kevin Boland",
+            "Peter Comiskey"
+        ]
+    },
+    "messages_per_person": [
+        {
+            "position": 1,
+            "name": "Niall Mac Mahon",
+            "amount": 2406
+        },
+        {
+            "position": 2,
+            "name": "Adam Murphy",
+            "amount": 1983
+        },
+        {
+            "position": 3,
+            "name": "Eamon Byrne",
+            "amount": 1523
+        },
+        {
+            "position": 4,
+            "name": "Ciar\u00c3\u00a1n Mackey",
+            "amount": 1237
+        },
+        {
+            "position": 5,
+            "name": "Jack Stevens",
+            "amount": 1123
+        },
+        {
+            "position": 6,
+            "name": "Alastar Cassidy",
+            "amount": 918
+        },
+        {
+            "position": 7,
+            "name": "Stephen Dunne",
+            "amount": 842
+        },
+        {
+            "position": 8,
+            "name": "Luke Stafford",
+            "amount": 742
+        },
+        {
+            "position": 9,
+            "name": "Christian Kilcar",
+            "amount": 472
+        },
+        {
+            "position": 10,
+            "name": "Stephen Murphy",
+            "amount": 452
+        },
+        {
+            "position": 11,
+            "name": "Sean Boland",
+            "amount": 374
+        },
+        {
+            "position": 12,
+            "name": "Tristan Ahern",
+            "amount": 278
+        },
+        {
+            "position": 13,
+            "name": "Stephen Murray",
+            "amount": 223
+        },
+        {
+            "position": 14,
+            "name": "Eoin O'Shaughnessy",
+            "amount": 218
+        },
+        {
+            "position": 15,
+            "name": "Ben McGovern",
+            "amount": 179
+        },
+        {
+            "position": 16,
+            "name": "Cian O'Reilly",
+            "amount": 159
+        },
+        {
+            "position": 17,
+            "name": "Conor Lowry",
+            "amount": 111
+        },
+        {
+            "position": 18,
+            "name": "David Reynolds",
+            "amount": 77
+        },
+        {
+            "position": 19,
+            "name": "Sean Parry",
+            "amount": 63
+        },
+        {
+            "position": 20,
+            "name": "Kevin Mullaney",
+            "amount": 51
+        },
+        {
+            "position": 21,
+            "name": "Maciek Cieslak",
+            "amount": 36
+        },
+        {
+            "position": 22,
+            "name": "Kevin Boland",
+            "amount": 29
+        },
+        {
+            "position": 23,
+            "name": "Peter Comiskey",
+            "amount": 28
+        },
+        {
+            "position": 24,
+            "name": "Sean O'Driscoll",
+            "amount": 21
+        }
+    ]
+}
