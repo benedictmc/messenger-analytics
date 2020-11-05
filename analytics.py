@@ -25,6 +25,9 @@ import operator
 
 start_time_2019 = 1546347661000
 start_time_2018 = 1514811661000
+
+
+
 with open("data/ABigBagofLads_y45L9dwTEQ/message_2019.json", "r") as f:
     message_data_2019 = json.load(f)
 with open("data/ABigBagofLads_y45L9dwTEQ/message_2018.json", "r") as f:
@@ -61,9 +64,6 @@ def newcomers_participants():
     all_participants_2019 = participants_2019
     return newcomers, all_participants_2019
 
-# newcomers, all_participants_2019 = newcomers_participants()
-# # print((newcomers))
-# print(len(all_participants_2019))
 
 def messages_per_person():
     message_dict = {}
