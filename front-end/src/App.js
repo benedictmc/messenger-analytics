@@ -1,18 +1,32 @@
 import './App.css';
 import { Parallax } from 'react-parallax';
 import header from './header.png' ;
+import wideHeader from './wideHeader.png' ;
 import background from './background.png' ;
 import roy from './roy.jpg' ;
 import niall from './niall.jpg' ;
 import cans from './cans.jpg' ;
 import { CCard,CCardImage,CCardBody,CCardTitle,CCardText } from '@coreui/react';
 import '@coreui/coreui/dist/css/coreui.min.css'
+import { useEffect, useState } from 'react';
+import analyticData from './data.json';
 
 const App = () =>{
 
+  const [width, setWidth] = useState(window.innerWidth);
+
+  console.log(analyticData.alltime_stats.message_total)
+
+
+  // for 
+
+
+
   return (
     <div>
-      <img src={header} alt="header" className="header-image"/>
+      {
+        width > 500 ? <img src={wideHeader} alt="header" className="header-image"/> : <img src={header} alt="header" className="header-image"/>
+      }
       <div className="content-container">
         <Parallax bgImage={ background } >
           <div className='parallax-div' >
@@ -25,23 +39,57 @@ const App = () =>{
                     <CCardBody>
                       <CCardTitle>Total Messages to date</CCardTitle>
                       <CCardText>
-                      100,290
+                         {new Intl.NumberFormat().format(analyticData.alltime_stats.message_total)}  
                       </CCardText>
                     </CCardBody>
                   </CCard>
-                  <CCard style={{ width: '18rem', marginTop: '20px' }}>
+                  <CCard style={{ width: '20rem', marginTop: '20px' }}>
                     <CCardBody>
-                      <CCardTitle>Total Messages to date</CCardTitle>
+                      <CCardTitle>Average Messages per Day</CCardTitle>
                       <CCardText>
-                      100,290
+                        { analyticData.alltime_stats.average_messages_per_day }
                       </CCardText>
                     </CCardBody>
                   </CCard>
-                  <CCard style={{ width: '18rem', marginTop: '20px' }}>
+                  <CCard style={{ width: '20rem', marginTop: '20px' }}>
                     <CCardBody>
-                      <CCardTitle>Total Messages to date</CCardTitle>
+                      <CCardTitle>Total Days of Groupchat</CCardTitle>
                       <CCardText>
-                      100,290
+                        { new Intl.NumberFormat().format(analyticData.alltime_stats.total_days) }  
+                      </CCardText>
+                    </CCardBody>
+                  </CCard>
+                  <CCard style={{ width: '20rem', marginTop: '20px' }}>
+                    <CCardBody>
+                      <CCardTitle>Person with Most Messages</CCardTitle>
+                      <CCardText>
+                        <div>
+                          <b>{ analyticData.alltime_stats.most_amount_of_messages_person.name }</b>
+                        </div>
+                        { new Intl.NumberFormat().format(analyticData.alltime_stats.most_amount_of_messages_person.amount) }  
+                      </CCardText>
+                    </CCardBody>
+                  </CCard>
+                  <CCard style={{ width: '20rem', marginTop: '20px' }}>
+                    <CCardBody>
+                      <CCardTitle>Longest Laugh</CCardTitle>
+                      <CCardText>
+                        <div>
+                          <b>{ analyticData.alltime_stats.longest_laugh.sender_name }</b>
+                        </div>
+                        <div className='message-div'>
+                          { analyticData.alltime_stats.longest_laugh.content }
+                        </div>
+                     
+                        <div className="reaction-container-div">
+                        {
+                          new Intl.DateTimeFormat('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          }).format(new Date(analyticData.alltime_stats.longest_laugh.timestamp_ms))
+                        }
+                        </div>
                       </CCardText>
                     </CCardBody>
                   </CCard>
@@ -54,30 +102,55 @@ const App = () =>{
           <div className='parallax-div' >
               <div >
                 <div className="heading-div" style={{background: "rgb(114, 187, 117)"}}>
-                  <h1>All Time Statistics</h1>
+                  <h1>Year Statistics</h1>
                 </div>
                 <div className="content-div">
-                  <CCard style={{ width: '18rem', marginTop: '20px' }}>
+                <CCard style={{ width: '20rem', marginTop: '20px' }}>
                     <CCardBody>
                       <CCardTitle>Total Messages to date</CCardTitle>
                       <CCardText>
-                      100,290
+                        { new Intl.NumberFormat().format(analyticData.year_stats.message_total) }  
                       </CCardText>
                     </CCardBody>
                   </CCard>
-                  <CCard style={{ width: '18rem', marginTop: '20px' }}>
+                  <CCard style={{ width: '20rem', marginTop: '20px' }}>
                     <CCardBody>
-                      <CCardTitle>Total Messages to date</CCardTitle>
+                      <CCardTitle>Average Messages per Day</CCardTitle>
                       <CCardText>
-                      100,290
+                        { analyticData.year_stats.average_messages_per_day }
                       </CCardText>
                     </CCardBody>
                   </CCard>
-                  <CCard style={{ width: '18rem', marginTop: '20px' }}>
+                  <CCard style={{ width: '20rem', marginTop: '20px' }}>
                     <CCardBody>
-                      <CCardTitle>Total Messages to date</CCardTitle>
+                      <CCardTitle>Person with Most Messages</CCardTitle>
                       <CCardText>
-                      100,290
+                        <div>
+                          <b>{ analyticData.year_stats.most_amount_of_messages_person.name }</b>
+                        </div>
+                        { new Intl.NumberFormat().format(analyticData.year_stats.most_amount_of_messages_person.amount) }  
+                      </CCardText>
+                    </CCardBody>
+                  </CCard>
+                  <CCard style={{ width: '20rem', marginTop: '20px' }}>
+                    <CCardBody>
+                      <CCardTitle>Longest Laugh</CCardTitle>
+                      <CCardText>
+                        <div>
+                          <b>{ analyticData.year_stats.longest_laugh.sender_name }</b>
+                        </div>
+                        <div className='message-div'>
+                          { analyticData.year_stats.longest_laugh.content }
+                        </div>
+                        <div className="reaction-container-div">
+                        {
+                          new Intl.DateTimeFormat('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          }).format(new Date(analyticData.year_stats.longest_laugh.timestamp_ms))
+                        }
+                        </div>
                       </CCardText>
                     </CCardBody>
                   </CCard>
@@ -93,59 +166,30 @@ const App = () =>{
                   <h1>Most Liked Messages</h1>
                 </div>
                 <div className="content-div">
-                  <CCard style={{ width: '20rem', marginTop: '20px' }}>
-                    <CCardBody>
-                      <CCardTitle>Stephen Murray</CCardTitle>
-                      <CCardText>
-                        <div className='message-div'>
-                          dsoakdokaokdoka ifhiashfih
-                        </div>
-                        <div>
-                          <b>Total Reactions:  </b>19
-                        </div>
-                        <div className="reaction-container-div">
-                          <div className="reaction-div">👏 16</div>
-                          <div className="reaction-div">👏 3</div>
-                        </div>
-                      </CCardText>
-                    </CCardBody>
+                  {analyticData.most_reacted_messages.map((message) => (
+                    <CCard style={{ width: '20rem', marginTop: '20px' }}>
+                      <CCardBody>
+                        <CCardTitle>{message.person}</CCardTitle>
+                        <CCardText>
+                          <div className='message-div'>
+                            { message.message }
+                          </div>
+                          <div>
+                            <b>Total Reactions:  </b>{ message.amount }
+                          </div>
+                          <div className="reaction-container-div">
+                            {
+                              message.reactions.map((reaction) => (
+                                <div className="reaction-div">{reaction.reaction} { reaction.amount }</div>
+                              ))
+                            }
+                          </div>
+                        </CCardText>
+                      </CCardBody>
                   </CCard>
-                  <CCard style={{ width: '20rem', marginTop: '20px' }}>
-                  <CCardBody>
-                      <CCardTitle>Stephen Murray</CCardTitle>
-                      <CCardText>
-                        <div className='message-div'>
-                          leave it out, this is a very long message toto sofj afos ashifia hsf asfhiahf  afhasifh afihaf asifh afiha fiahf ahfaifh iahf aihsf aifh
-                        </div>
-                        <div>
-                          <b>Total Reactions:  </b>19
-                        </div>
-                        <div className="reaction-container-div">
-                          <div className="reaction-div">👏 16</div>
-                          <div className="reaction-div">👏 3</div>
-                        </div>
-                      </CCardText>
-                    </CCardBody>
-                  </CCard>
-                  <CCard style={{ width: '20rem', marginTop: '20px' }}>
-                  <CCardBody>
-                      <CCardTitle>Stephen Murray</CCardTitle>
-                      <CCardText>
-                        <div className='message-div'>
-                          this is a very long message toto sofj afos ashifia hsf asfhiahf  afhasifh afihaf asifh afiha fiahf ahfaifh iahf aihsf aifh
-                        </div>
-                        <div>
-                          <b>Total Reactions:  </b>19
-                        </div>
-                        <div className="reaction-container-div">
-                          <div className="reaction-div">👏 16</div>
-                          <div className="reaction-div">👏 3</div>
-                        </div>
-                      </CCardText>
-                    </CCardBody>
-                  </CCard>
-                </div>
+                ))}
               </div>
+            </div>
           </div>
         </Parallax>
         <div className='space-div' style={{background: "#96be25"}}></div>
@@ -215,7 +259,7 @@ const App = () =>{
                         </div>
                       </CCardText>
                     </CCardBody>
-                  </CCard>
+                  </CCard> 
                 </div>
               </div>
           </div>
