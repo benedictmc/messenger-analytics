@@ -15,7 +15,7 @@ const App = () =>{
 
   const [width, setWidth] = useState(window.innerWidth);
 
-  console.log(analyticData.alltime_stats.message_total)
+  console.log(analyticData)
 
 
   // for 
@@ -174,6 +174,7 @@ const App = () =>{
                           <div className='message-div'>
                             { message.message }
                           </div>
+                          <hr></hr>
                           <div>
                             <b>Total Reactions:  </b>{ message.amount }
                           </div>
@@ -200,66 +201,34 @@ const App = () =>{
                   <h1>Most Liked Pictures</h1>
                 </div>
                 <div className="content-div">
-                  <CCard style={{ width: '22rem', marginTop: '20px' }}>
-                  <CCardBody>
-                      <CCardTitle>Stephen Murray</CCardTitle>
-                      <CCardText>
-                      <CCardImage src={roy}/>
-                        <div>
-                          <b>Total Reactions:  </b>19
-                        </div>
-                        <div className="reaction-container-div">
-                          <div className="reaction-div">👏 16</div>
-                          <div className="reaction-div">👏 3</div>
-                        </div>
-                      </CCardText>
-                    </CCardBody>
-                  </CCard>
-                  <CCard style={{ width: '22rem', marginTop: '20px' }}>
-                  <CCardBody>
-                      <CCardTitle>Stephen Murray</CCardTitle>
-                      <CCardText>
-                      <CCardImage src={roy}/>
-                        <div>
-                          <b>Total Reactions:  </b>19
-                        </div>
-                        <div className="reaction-container-div">
-                          <div className="reaction-div">👏 16</div>
-                          <div className="reaction-div">👏 3</div>
-                        </div>
-                      </CCardText>
-                    </CCardBody>
-                  </CCard>
-                  <CCard style={{ width: '22rem', marginTop: '20px' }}>
-                  <CCardBody>
-                      <CCardTitle>Stephen Murray</CCardTitle>
-                      <CCardText>
-                      <CCardImage src={roy}/>
-                        <div>
-                          <b>Total Reactions:  </b>19
-                        </div>
-                        <div className="reaction-container-div">
-                          <div className="reaction-div">👏 16</div>
-                          <div className="reaction-div">👏 3</div>
-                        </div>
-                      </CCardText>
-                    </CCardBody>
-                  </CCard>
-                  <CCard style={{ width: '22rem', marginTop: '20px' }}>
-                  <CCardBody>
-                      <CCardTitle>Stephen Murray</CCardTitle>
-                      <CCardText>
-                      <CCardImage src={roy}/>
-                        <div>
-                          <b>Total Reactions:  </b>19
-                        </div>
-                        <div className="reaction-container-div">
-                          <div className="reaction-div">👏 16</div>
-                          <div className="reaction-div">👏 3</div>
-                        </div>
-                      </CCardText>
-                    </CCardBody>
-                  </CCard> 
+                  {
+                    analyticData.most_reacted_photo.map((message) => (
+                      <CCard style={{ width: '22rem', marginTop: '20px' }}>
+                      <CCardBody>
+                          <CCardTitle>{ message.person }</CCardTitle>
+                          <CCardText>
+                          <CCardImage src={message.photo[0]['uri']}/>
+                            { message.message_after ? 
+                              <div className='photo-message'>
+                                  <b>{message.message_after_person}: </b>{message.message_after} 
+                              </div> 
+                            : <div></div> }
+                            <hr></hr>
+                            <div style={{ marginTop: '10px' }}>
+                              <b>Total Reactions:  </b>{ message.amount }
+                            </div>
+                            <div className="reaction-container-div">
+                              {
+                                message.reactions.map((reaction) => (
+                                  <div className="reaction-div">{reaction.reaction} { reaction.amount }</div>
+                                ))
+                              }
+                            </div>
+                          </CCardText>
+                        </CCardBody>
+                      </CCard>
+                    ))
+                  }
                 </div>
               </div>
           </div>

@@ -2,7 +2,7 @@ import json
 import datetime
 import operator
 import os
-import codecs 
+import shutil
 
 # Author: Benedict McGovern
 # Idea:
@@ -31,22 +31,25 @@ start_time_2018 = 1514811661000
 start_time_2022 = 1640995200000
 start_time_2023 = 1672531200000
 
-if "message_all.json" in os.listdir("data/abigbagoflads_113687358978664/"):
-    with open("data/abigbagoflads_113687358978664/message_all.json", "r") as f:
+filepath = "data/abigbagoflads_113687358978664/"
+
+if "message_all.json" in os.listdir(f"{filepath}"):
+    with open(f"{filepath}message_all.json", "r") as f:
         message_data = json.load(f)
 else:
     all_messages = []
     for i in range(1, 15):
         
-        with open(f"data/abigbagoflads_113687358978664/message_{i}.json", "r") as f:
+        with open(f"{filepath}message_{i}.json", "r") as f:
             message_data = json.load(f)
 
         all_messages.extend(message_data["messages"])
 
     message_data["messages"] = all_messages
 
-    with open("data/abigbagoflads_113687358978664/message_all.json", "w") as f:
+    with open(f"{filepath}message_all.json", "w") as f:
         json.dump(message_data, f)
+
 
 def decode_unicode(string):
 
@@ -66,7 +69,7 @@ def sort_reactions(reactions):
             "reaction" : k,
             "amount": v
         })
-        
+
     return react_list
 
 
@@ -149,7 +152,7 @@ def most_reacted_messages(messages):
         if 'reactions' in message.keys():
             if len(message['reactions']) > 5:
                 if 'content' in message.keys():
-                    reactions_dict.append({'person': message['sender_name'], 'message': decode_unicode(message['content']), 'reactions': sort_reactions(message['reactions']),  'amount': len(message['reactions'])})
+                    reactions_dict.append({'person': decode_unicode(message['sender_name']), 'message': decode_unicode(message['content']), 'reactions': sort_reactions(message['reactions']),  'amount': len(message['reactions'])})
 
     result = sorted(reactions_dict, key = lambda i: i['amount'], reverse=True)
 
@@ -164,17 +167,19 @@ def most_reacted_photo(messages):
     for message in messages:
 
         if reacted_photo and 'content' in message.keys():
-            reactions_dict[-1]["message_after"] = f"{message['content']} - {message['sender_name']}"
+            reactions_dict[-1]["message_after"] = decode_unicode(message['content'])
+            reactions_dict[-1]["message_after_person"] = decode_unicode(message['sender_name'])
             reacted_photo = False
 
         if 'reactions' in message.keys():
             if len(message['reactions']) > 1:
                 if 'photos' in message.keys():
-
-                    reactions_dict.append({'person': message['sender_name'], 'photo': message['photos'], 'reactions': message['reactions'], 'amount': len(message['reactions'])})
+                    message['photos'][0]["uri"] = message['photos'][0]["uri"].replace("messages/inbox/abigbagoflads_113687358978664/photos/", "pictures/")
+                    reactions_dict.append({'person': decode_unicode(message['sender_name']), 'photo': message['photos'], 'reactions': sort_reactions(message['reactions']), 'amount': len(message['reactions'])})
 
                     if 'content' in prev_message.keys():
-                        reactions_dict[-1]["message_before"] = f"{prev_message['content']} - {prev_message['sender_name']}"
+                        reactions_dict[-1]["message_before"] = decode_unicode(prev_message['content'])
+                        reactions_dict[-1]["message_before_person"] = decode_unicode(prev_message['sender_name'])
 
                     reacted_photo = True
 
@@ -242,3 +247,24 @@ def messages_per_day(messages):
     return result
 
 
+
+
+def search_for_image(messages):
+    image_list = []
+    for _dir in os.listdir("C:/Users/bened/Documents/facebook data/2022 FB Data"):
+        print(_dir)
+        print("********************")
+        for picture in os.listdir(f"{filepath}/photos"):
+            # print(picture)
+            image_list.append(picture)
+    # C:/Users\bened\Documents\facebook data\2022 FB Data\facebook-benmcgovern3.1\messages\inbox\abigbagoflads_113687358978664
+
+    
+    for message in messages:
+        if 'photos' in message.keys():
+            photo_uri = message['photos'][0]['uri']
+            photo_uri = photo_uri.replace("messages/inbox/abigbagoflads_113687358978664/photos/", "")
+            if photo_uri in image_list:
+                print("Photo in list")
+            else:
+                print("Photo NOT in list")

@@ -21,8 +21,8 @@ data = {
         'most_amount_of_messages_person': messages_per_person(messages_2022)[0],
         'longest_laugh': longest_string_hahah(messages_2022),
     },
-    'most_reacted_messages' : most_reacted_messages(messages_2022),
-    'most_reacted_photo' : most_reacted_photo(messages_2022),
+    'most_reacted_messages' : most_reacted_messages(messages_2022)[:20],
+    'most_reacted_photo' : most_reacted_photo(messages_2022)[:20],
 }
 
 ## Printing and saving data
