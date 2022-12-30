@@ -1,6 +1,7 @@
 import json
 import datetime
 import operator
+import os
 
 # Author: Benedict McGovern
 # Idea:
@@ -26,69 +27,90 @@ import operator
 start_time_2019 = 1546347661000
 start_time_2018 = 1514811661000
 
+start_time_2022 = 1640995200000
+start_time_2023 = 1672531200000
 
-
-with open("data/ABigBagofLads_y45L9dwTEQ/message_2019.json", "r") as f:
-    message_data_2019 = json.load(f)
-with open("data/ABigBagofLads_y45L9dwTEQ/message_2018.json", "r") as f:
-    message_data_2018 = json.load(f)
-
-def break_messages_into_year(year):
-    with open("data/ABigBagofLads_y45L9dwTEQ/message_1.json", "r") as f:
+if "message_all.json" in os.listdir("data/abigbagoflads_113687358978664/"):
+    print("Reading all messages ...")
+    with open("data/abigbagoflads_113687358978664/message_all.json", "r") as f:
         message_data = json.load(f)
+else:
+    print("Compiling all messages ...")
+    all_messages = []
+    for i in range(1, 15):
+        
+        with open(f"data/abigbagoflads_113687358978664/message_{i}.json", "r") as f:
+            message_data = json.load(f)
 
-    messages = message_data['messages']
-    messages_2018 = {'participants': message_data['participants'], 'messages': [] }
+        all_messages.extend(message_data["messages"])
 
-    for i, message in enumerate(messages):
+    message_data["messages"] = all_messages
+
+    with open("data/abigbagoflads_113687358978664/message_all.json", "w") as f:
+        json.dump(message_data, f)
+
+
+def total_messages_count():
+    total_messages = len(message_data["messages"])
+    print(f"Total messages are {total_messages}")
+    return total_messages
+
+
+total_messages_count()
+
+def messages_in_year(start_period, end_period):
+
+    message_list = []
+
+    for message in message_data["messages"]:
         ms = message['timestamp_ms']
-        if ms > start_time_2019:
-            continue
-        elif ms > start_time_2018:
-            messages_2018['messages'].append(message)
-        else:
+        if ms > start_period and ms < end_period:
+            message_list.append(message)
+        else: 
             break
 
-    with open("data/ABigBagofLads_y45L9dwTEQ/message_2018.json", 'w') as f:
-        json.dump(messages_2018, f)
+    print(f"Total messages between {start_period} and {end_period} are {len(message_list)}")
 
-def newcomers_participants():
-    participants_2019, participants_2018 = [], []
-    for message in message_data_2019['messages']:
-        if message['sender_name'] not in participants_2019:
-            participants_2019.append(message['sender_name'])
-    for message in message_data_2018['messages']:
-        if message['sender_name'] not in participants_2018:
-            participants_2018.append(message['sender_name'])    
-    newcomers = list(set(participants_2019)- set(participants_2018))
-    all_participants_2019 = participants_2019
-    return newcomers, all_participants_2019
+    return message_list
 
 
-def messages_per_person():
+messages_2022 = messages_in_year(start_time_2022, start_time_2023)
+messages_all = message_data["messages"]
+
+
+def messages_per_person(messages):
     message_dict = {}
-    for message in message_data_2019['messages']:
+
+    for message in messages:
         sender = message['sender_name']
+
         if sender not in message_dict.keys():
             message_dict[sender] = 1
         else:
             message_dict[sender] += 1
-    # for key, val in message_dict.items():
+
     result, count = [], 1
     for key, value in sorted(message_dict.items(), key=lambda item: item[1], reverse=True):
         message_dict_sorted = {}
-        message_dict_sorted['position'] =count
-        message_dict_sorted['name'] =key
-        message_dict_sorted['amount'] =value
+        message_dict_sorted['position'] = count
+        message_dict_sorted['name'] = key
+        message_dict_sorted['amount'] = value
         result.append(message_dict_sorted)
         count +=1
 
+    print(f"Messages per person are {result}")
     return result
 
 
-def reactions_per_person():
+with open("result.json", "w") as f:
+    json.dump(messages_per_person(messages_2022), f, indent=4)
+
+
+def reactions_per_person(messages):
     message_dict = {}
-    for message in message_data_2019['messages']:
+
+    for message in messages:
+
         sender = message['sender_name']
         if 'reactions' in message.keys():
             reactions_amount = len(message['reactions'])
@@ -96,6 +118,7 @@ def reactions_per_person():
                 message_dict[sender] = reactions_amount
             else:
                 message_dict[sender] += reactions_amount
+
     result, count = [], 1
     for key, value in sorted(message_dict.items(), key=lambda item: item[1], reverse=True):
         message_dict_sorted = {}
@@ -104,46 +127,68 @@ def reactions_per_person():
         message_dict_sorted['amount'] =value
         result.append(message_dict_sorted)
         count +=1
+
+    print(f"Reactions per person are {result}")
     return result
 
-def reactions_per_message_per_person():
-    messages = messages_per_person()
-    reactions = reactions_per_person()
-    message_dict = {}
-    for sender in messages.keys():
-        message_dict[sender] =  float(round(reactions[sender]/messages[sender], 2))
-    return message_dict
-
-# reactions_per_message_per_person()
+with open("result.json", "w") as f:
+    json.dump(reactions_per_person(messages_2022), f, indent=4)
 
 
-def most_reactions_per_message():
-    messages = message_data_2019['messages']
+def most_reacted_messages(messages):
     reactions_dict = []
+
     for message in messages:
-        sender = message['sender_name']
         if 'reactions' in message.keys():
             if len(message['reactions']) > 5:
                 if 'content' in message.keys():
                     reactions_dict.append({'person': message['sender_name'], 'message': message['content'], 'amount': len(message['reactions'])})
-    reactions_dict = sorted(reactions_dict, key = lambda i: i['amount'], reverse=True)
-    with open("data/reactions.json", 'w') as f:
-        json.dump(reactions_dict, f)
+
+    result = sorted(reactions_dict, key = lambda i: i['amount'], reverse=True)
+
+    print(f"Most reacted messages are {result}")
+    return result
+
+
+with open("result.json", "w") as f:
+    json.dump(most_reacted_messages(messages_all), f, indent=4)
+
 
 # most_reactions_per_message()
 
-def most_reactions_per_photo():
-    messages = message_data_2019['messages']
+def most_reacted_photo(messages):
     reactions_dict = []
+
     for message in messages:
-        sender = message['sender_name']
         if 'reactions' in message.keys():
             if len(message['reactions']) > 1:
                 if 'photos' in message.keys():
                     reactions_dict.append({'person': message['sender_name'], 'photo': message['photos'], 'amount': len(message['reactions'])})
-    reactions_dict = sorted(reactions_dict, key = lambda i: i['amount'], reverse=True)
-    with open("data/reactions_photo.json", 'w') as f:
-        json.dump(reactions_dict, f)
+
+    result = sorted(reactions_dict, key = lambda i: i['amount'], reverse=True)
+
+    print(f"Most reacted photes are {result}")
+    return result
+
+
+def most_reacted_video(messages):
+    reactions_dict = []
+
+    for message in messages:
+        if 'reactions' in message.keys():
+            if len(message['reactions']) > 1:
+                if 'videos' in message.keys():
+                    reactions_dict.append({'person': message['sender_name'], 'videos': message['videos'], 'amount': len(message['reactions'])})
+
+    result = sorted(reactions_dict, key = lambda i: i['amount'], reverse=True)
+
+    print(f"Most reacted videos are {result}")
+    return result
+
+
+with open("result.json", "w") as f:
+    json.dump(most_reacted_video(messages_all), f, indent=4)
+
 
 # most_reactions_per_photo()
 
@@ -226,6 +271,18 @@ def most_messages_in_day():
     print(f"The most amount of messages in a day was {largest}")
     with open("data/message_per_day.json", 'w') as f:
         json.dump(messages_dict, f)
+
+def newcomers_participants():
+    participants_2019, participants_2018 = [], []
+    for message in message_data_2019['messages']:
+        if message['sender_name'] not in participants_2019:
+            participants_2019.append(message['sender_name'])
+    for message in message_data_2018['messages']:
+        if message['sender_name'] not in participants_2018:
+            participants_2018.append(message['sender_name'])    
+    newcomers = list(set(participants_2019)- set(participants_2018))
+    all_participants_2019 = participants_2019
+    return newcomers, all_participants_2019
 
 
 # most_messages_in_day()
